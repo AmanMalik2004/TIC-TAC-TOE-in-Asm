@@ -1,8 +1,8 @@
 include irvine32.inc
 .data
-	board byte  "1", "2", "3",
-		    "4", "5", "6",
-		    "7", "8", "9", 0
+    board byte "1", "2", "3",
+               "4", "5", "6",
+               "7", "8", "9", 0
     player1Msg BYTE "PLAYER 1 (O) TURN ENTER NUMBER : ", 0
     player2Msg BYTE "PLAYER 2 (X) TURN ENTER NUMBER : ", 0
     player1WinMsg BYTE "PLAYER 1 WINS", 0
@@ -121,8 +121,8 @@ main proc
         call displayboard
        
 
-	endgame:
-	exit
+    endgame:
+    exit
 main endp
 
 displayboard proc
@@ -178,100 +178,89 @@ movesleft proc
 movesleft endp
 
 checkforwin proc
-    ; Check horizontally
-    mov esi, 0              ; Start with the first row
-    mov ecx, 3              ; Check 3 rows
+    mov esi, 0
+    mov ecx, 3
     checkHorizontal:
-        ; Compare the three positions in the row
-        mov al, board[esi]  ; Load board[0], board[1], board[2]
+        mov al, board[esi]
         mov bl, board[esi + 1]
         mov dl, board[esi + 2]
 
         cmp al, bl
-        jne noHorizontalWin  ; If not the same, no horizontal win
+        jne noHorizontalWin
         cmp al, dl
-        jne noHorizontalWin  ; If not the same, no horizontal win
+        jne noHorizontalWin
 
-        ; We found a horizontal win
         cmp al, 'O'
-        je playerOWin        ; Player 1 (O) wins
+        je playerOWin
         cmp al, 'X'
-        je playerXWin        ; Player 2 (X) wins
+        je playerXWin
 
     noHorizontalWin:
-        add esi, 3           ; Move to the next row
+        add esi, 3
         loop checkHorizontal
 
-    ; Check vertically
-    mov esi, 0              ; Start with the first column
-    mov ecx, 3              ; Check 3 columns
+    mov esi, 0
+    mov ecx, 3
     checkVertical:
-        ; Compare the three positions in the column
-        mov al, board[esi]   ; Load board[0], board[3], board[6]
+        mov al, board[esi]
         mov bl, board[esi + 3]
         mov dl, board[esi + 6]
 
         cmp al, bl
-        jne noVerticalWin    ; If not the same, no vertical win
+        jne noVerticalWin
         cmp al, dl
-        jne noVerticalWin    ; If not the same, no vertical win
+        jne noVerticalWin
 
-        ; We found a vertical win
         cmp al, 'O'
-        je playerOWin        ; Player 1 (O) wins
+        je playerOWin
         cmp al, 'X'
-        je playerXWin        ; Player 2 (X) wins
+        je playerXWin
 
     noVerticalWin:
-        inc esi              ; Move to the next column
+        inc esi
         loop checkVertical
 
-    ; Check diagonally (first diagonal)
-    mov al, board[0]        ; board[0], board[4], board[8]
+    mov al, board[0]
     mov bl, board[4]
     mov dl, board[8]
 
     cmp al, bl
-    jne noDiagonalWin       ; If not the same, no diagonal win
+    jne noDiagonalWin
     cmp al, dl
-    jne noDiagonalWin       ; If not the same, no diagonal win
+    jne noDiagonalWin
 
-    ; We found a diagonal win
     cmp al, 'O'
-    je playerOWin           ; Player 1 (O) wins
+    je playerOWin
     cmp al, 'X'
-    je playerXWin           ; Player 2 (X) wins
+    je playerXWin
 
     noDiagonalWin:
 
-    ; Check diagonally (second diagonal)
-    mov al, board[2]        ; board[2], board[4], board[6]
+    mov al, board[2]
     mov bl, board[4]
     mov dl, board[6]
 
     cmp al, bl
-    jne noSecondDiagonalWin ; If not the same, no second diagonal win
+    jne noSecondDiagonalWin
     cmp al, dl
-    jne noSecondDiagonalWin ; If not the same, no second diagonal win
+    jne noSecondDiagonalWin
 
-    ; We found a second diagonal win
     cmp al, 'O'
-    je playerOWin           ; Player 1 (O) wins
+    je playerOWin
     cmp al, 'X'
-    je playerXWin           ; Player 2 (X) wins
+    je playerXWin
 
     noSecondDiagonalWin:
 
-    ; If no win found, return 0
     mov al, 0
     ret
 
 playerOWin:
-    mov al, 10              ; Player 1 (O) wins
+    mov al, 10
     ret
 
 playerXWin:
-    mov al, 5               ; Player 2 (X) wins
+    mov al, 5
     ret
 checkforwin endp
 end main
