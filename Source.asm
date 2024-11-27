@@ -1,9 +1,9 @@
 include irvine32.inc
 .data
-	board byte "1", "2", "3",
-			   "4", "5", "6",
-			   "7", "8", "9", 0
-	player1Msg BYTE "PLAYER 1 (O) TURN ENTER NUMBER : ", 0
+	board byte  "1", "2", "3",
+		    "4", "5", "6",
+		    "7", "8", "9", 0
+    player1Msg BYTE "PLAYER 1 (O) TURN ENTER NUMBER : ", 0
     player2Msg BYTE "PLAYER 2 (X) TURN ENTER NUMBER : ", 0
     player1WinMsg BYTE "PLAYER 1 WINS", 0
     player2WinMsg BYTE "PLAYER 2 WINS", 0
