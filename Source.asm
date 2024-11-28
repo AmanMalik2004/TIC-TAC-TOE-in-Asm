@@ -1,14 +1,16 @@
 include irvine32.inc
 .data
-    board byte "1", "2", "3",
-               "4", "5", "6",
-               "7", "8", "9", 0
-    player1Msg BYTE "PLAYER 1 (O) TURN ENTER NUMBER : ", 0
+
+	board byte "1", "2", "3",
+			   "4", "5", "6",
+			   "7", "8", "9", 0
+	player1Msg BYTE "PLAYER 1 (O) TURN ENTER NUMBER : ", 0
     player2Msg BYTE "PLAYER 2 (X) TURN ENTER NUMBER : ", 0
     player1WinMsg BYTE "PLAYER 1 WINS", 0
     player2WinMsg BYTE "PLAYER 2 WINS", 0
     drawMsg BYTE "ITS A DRAW", 0
     invalidMsg BYTE "INVALID MOVE", 0
+
 .code
 main proc
     mov ecx, 9
@@ -121,36 +123,41 @@ main proc
         call displayboard
        
 
-    endgame:
-    exit
+	endgame:
+	exit
 main endp
 
 displayboard proc
+
     call crlf
     mov esi, 0
     mov ecx, 8
+
     printloop:
-        mov al, board[esi]
-        call writechar
-        inc esi
-        cmp esi, 3
-        je nextrow
-        cmp esi, 6
-        je nextrow
-        mov al, ' '
-        call writechar
+            mov al, board[esi]
+            call writechar
+            inc esi
+            cmp esi, 3
+            je nextrow
+            cmp esi, 6
+            je nextrow
+            mov al, ' '
+            call writechar
         loop printloop
         call crlf
+
         ret
+
     nextrow:
         call crlf
         jmp printloop
 
+    ret
 displayboard endp
 
 movesleft proc
     push ecx
-    mov ecx, 8
+    mov ecx, 9
     mov esi, 0
 
     l1:
@@ -178,65 +185,69 @@ movesleft proc
 movesleft endp
 
 checkforwin proc
-    mov esi, 0
-    mov ecx, 3
+
+    mov esi, 0              
+    mov ecx, 3             
+
     checkHorizontal:
-        mov al, board[esi]
+        mov al, board[esi]  
         mov bl, board[esi + 1]
         mov dl, board[esi + 2]
 
         cmp al, bl
-        jne noHorizontalWin
+        jne noHorizontalWin  
         cmp al, dl
-        jne noHorizontalWin
+        jne noHorizontalWin  
 
         cmp al, 'O'
-        je playerOWin
+        je playerOWin        
         cmp al, 'X'
-        je playerXWin
+        je playerXWin        
 
     noHorizontalWin:
-        add esi, 3
+        add esi, 3           
         loop checkHorizontal
 
-    mov esi, 0
-    mov ecx, 3
+    mov esi, 0            
+    mov ecx, 3            
+   
     checkVertical:
         mov al, board[esi]
         mov bl, board[esi + 3]
         mov dl, board[esi + 6]
 
         cmp al, bl
-        jne noVerticalWin
+        jne noVerticalWin    
         cmp al, dl
-        jne noVerticalWin
+        jne noVerticalWin    
+
 
         cmp al, 'O'
-        je playerOWin
+        je playerOWin     
         cmp al, 'X'
-        je playerXWin
+        je playerXWin     
 
     noVerticalWin:
-        inc esi
+        inc esi           
         loop checkVertical
 
-    mov al, board[0]
+    mov al, board[0]       
     mov bl, board[4]
     mov dl, board[8]
 
     cmp al, bl
-    jne noDiagonalWin
+    jne noDiagonalWin      
     cmp al, dl
-    jne noDiagonalWin
+    jne noDiagonalWin      
 
     cmp al, 'O'
-    je playerOWin
+    je playerOWin      
     cmp al, 'X'
-    je playerXWin
+    je playerXWin      
 
     noDiagonalWin:
-
-    mov al, board[2]
+    
+    mov al, board[2]   
     mov bl, board[4]
     mov dl, board[6]
 
@@ -246,21 +257,20 @@ checkforwin proc
     jne noSecondDiagonalWin
 
     cmp al, 'O'
-    je playerOWin
+    je playerOWin 
     cmp al, 'X'
-    je playerXWin
+    je playerXWin 
 
     noSecondDiagonalWin:
-
     mov al, 0
     ret
 
 playerOWin:
-    mov al, 10
+    mov al, 10          
     ret
 
 playerXWin:
-    mov al, 5
+    mov al, 5           
     ret
 checkforwin endp
 end main
